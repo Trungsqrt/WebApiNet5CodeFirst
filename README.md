@@ -1,10 +1,10 @@
 # Menu
-* [CreateDatabaseEFcore](#Create Database using EF core)
-* [Appsetting.json](#Config appsetting.json)
-* [DbSet](#Create DbSet)
+* [Create Database using EF core](#Create Database using EF core)
+* [Config appsetting.json](#Appsetting.json)
+* [Create DbSet](#Create DbSet)
 * [Migration](#Migration)
-* [Relationship](#Add relationship)
-* [CreateApi](#Create first Api)
+* [Add relationship](#Add relationship)
+* [Create first Api](#Create first Api)
 
 
 # WebApiNet5CodeFirst
@@ -42,7 +42,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 ```
 
 
-# Config appsetting.json
+# Appsetting.json
 **I need config appsetting.json to add ConnectionString**
 ```c#
 "ConnectionStrings": {
