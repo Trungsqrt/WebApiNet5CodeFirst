@@ -51,10 +51,14 @@ public class MyDbContext : DbContext
    public DbSet<HangHoa> HangHoas { get; set; }
 }
 ```
+**More details**
+I consider `DbSet<HangHoa> HangHoas` is convert structure HangHoa -> DbSet. And
+`get` is `select sql`
+`set` is `insert sql`
 
 Below the constructor, I created a DbSet HangHoas
-*DbSet represents a set of HangHoa entities*
-*Every where that want to interact with HangHoa EF => inject MyDbContext and use*
+> DbSet represents a set of HangHoa entities
+> Every where that want to interact with HangHoa EF => inject MyDbContext and use
 
 # Migration
 **Migration to create database mapped DbSet**
@@ -90,8 +94,8 @@ protected override void Down(MigrationBuilder migrationBuilder)
 }
 ```
 
-In `Up` method I can see all properties of HangHoa table was generate, And if I use `Update-database` this method will be run and create table database same properties described on it
-And `Down` method will run when `Remove-migration` and it drop this table database same name.
+> In `Up` method I can see all properties of HangHoa table was generate, And if I use `Update-database` this method will be run and create table database same properties described on it
+> And `Down` method will run when `Remove-migration` and it drop this table database same name.
 
 **So I run `update-database` **
 
@@ -128,7 +132,7 @@ public class HangHoa
 }
 ```
 
-`?` is exist or not `[ForeignKey("MaLoai")]` set the MaLoai is foreign key
+> `?` is exist or not `[ForeignKey("MaLoai")]` set the MaLoai is foreign key
 
 After that I add new `DbSet`
 ```c#
@@ -136,7 +140,116 @@ public DbSet<Loai> Loais { get; set; }
 ```
 
 # Create first Api
-
+**Overview**
 Create new file `LoaisController.cs` at Controllers folder
 
+In the first lines I can see 
+```c#
+[Route("api/[controller]")]
+[ApiController]
+public class LoaisController : ControllerBase
+{}
+```
+> The `controller` in `[Route("api/[controller]")]` will map with the class name bellow
+In this situation it become `[Route("api/Loais")]`
 
+**Inside the class LoaisController**
+```c#
+private readonly MyDbContext _context;
+
+public LoaisController(MyDbContext context)
+{
+   _context = context;
+}
+```
+> `readonly` keyword is mean Run-Time constant 
+-> it will be assigned value from `LoaisController()` at the first run of program, and **Can not be changed after**
+So `_context` is represent for `MyDbContext` and I will working on it.
+
+**Structure of Get and Get by Id api method**
+
+**GET**
+```c#
+[HttpGet]
+public IActionResult GetAll()
+{
+   var dsLoai = _context.Loais.ToList();
+   return Ok(dsLoai);
+}
+```
+> `ToList()` is a LINQ syntax, help parse `Loais` to `List` structure
+It convert all data in `Loais` into a `List`
+
+
+**GET by id**
+```c#
+[HttpGet("{id}")]
+public IActionResult GetAll(int id)
+{
+   var dsLoai = _context.Loais.SingleOrDefault(loai => loai.MaLoai == id);
+   if (dsLoai == null)
+       return Ok(dsLoai);
+   else
+       return NotFound();
+}
+```
+`SingleOrDefault` Returns a single, specific element of a sequence, or a default value if that element is not found (return `[]`).
+
+**POST**
+In post i need define (create) model 
+
+Create `LoaiModel.cs` file in `Models` folder
+> Everything was defined in this file, it **will show** in swagger `POST` method
+
+```c#
+public class LoaiModel
+{
+  [Required]
+  [MaxLength(50)]
+  public string Tenloai { get; set; }
+}
+```
+At here I only define the `TenLoai` because `MaLoai` will be **automatic increase**
+
+After create models
+
+```c#
+[HttpPost]
+public IActionResult CreateNew(LoaiModel model)
+{
+   var loai = new Loai
+   {
+       Tenloai = model.Tenloai,
+   };
+   _context.Add(loai);
+   _context.SaveChanges();
+   return Ok(new
+   {
+       loai.MaLoai,
+       loai.Tenloai
+   });
+}
+```
+1. Create a instance `Loai` named `loai`
+2. assign `model.TenLoai` (which required I input on swagger) to `Tenloai` (An property of `loai` - instance of `Loai`)
+**Note:** `model.TenLoai` is data of me input from keyboard...
+3. Add value to `_context`
+4. SaveChanges() will trigger the insert SQL
+5. return 2 field `MaLoai` and `Tenloai` that just input
+
+**PUT**
+```c#
+[HttpPut("{id}")]
+public IActionResult UpdateLoaiById(int id, LoaiModel model)
+{
+   var dsLoai = _context.Loais.SingleOrDefault(loai => loai.MaLoai == id);
+   if (dsLoai != null)
+   {
+       dsLoai.Tenloai = model.Tenloai;
+       _context.SaveChanges();
+       return NoContent();
+   }
+   else
+       return NotFound();
+}
+```
