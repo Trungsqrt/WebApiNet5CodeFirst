@@ -1,9 +1,18 @@
+# Menu
+* [Create Database using EF core](#Create Database using EF core)
+* [Config appsetting.json](#Config appsetting.json)
+* [Create DbSet](#Create DbSet)
+* [Migration](#Migration)
+* [Add relationship](#Add relationship)
+* [Create first Api](#Create first Api)
+
+
 # WebApiNet5CodeFirst
 My first web api
 
+
 # Create Database using EF core
 **Create database using Entity Framework core**
-
 import 2 namespace DataAnnotations and DataAnnotations.Schema to use properties such as `[Key] [Required]...`  to create database for project code first.
 ```c#
 using System.ComponentModel.DataAnnotations;
@@ -31,6 +40,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
     }
 ```
+
+
 # Config appsetting.json
 **I need config appsetting.json to add ConnectionString**
 ```c#
@@ -38,6 +49,7 @@ using System.ComponentModel.DataAnnotations.Schema;
     "MyDB": "Data Source=DESKTOP-AKO8HKM\\SQLEXPRESS;Initial Catalog=Net5CodeFirst;Integrated Security=True"
   }
 ```
+
 
 # Create DbSet
 **At MyDbContext.cs**
@@ -51,6 +63,7 @@ public class MyDbContext : DbContext
    public DbSet<HangHoa> HangHoas { get; set; }
 }
 ```
+
 **More details**
 I consider `DbSet<HangHoa> HangHoas` is convert structure HangHoa -> DbSet. And
 `get` is `select sql`
@@ -59,6 +72,7 @@ I consider `DbSet<HangHoa> HangHoas` is convert structure HangHoa -> DbSet. And
 Below the constructor, I created a DbSet HangHoas
 > DbSet represents a set of HangHoa entities
 > Every where that want to interact with HangHoa EF => inject MyDbContext and use
+
 
 # Migration
 **Migration to create database mapped DbSet**
@@ -99,12 +113,13 @@ protected override void Down(MigrationBuilder migrationBuilder)
 
 **So I run `update-database` **
 
+
 # Add relationship
 **Add relationship Table Loai and Table HangHoa**
 
-**at Table Loai I have general property, and a special property named HangHoas, it is represent for 1-n relationship
-
+**at Table Loai I have general property, and a special property named HangHoas, it is represent for 1-n relationship**
 *1 Loai has many HangHoas*
+
 ```c#
 [Table("Loai")]
 public class Loai
@@ -139,6 +154,7 @@ After that I add new `DbSet`
 public DbSet<Loai> Loais { get; set; }
 ```
 
+
 # Create first Api
 **Overview**
 Create new file `LoaisController.cs` at Controllers folder
@@ -168,6 +184,7 @@ So `_context` is represent for `MyDbContext` and I will working on it.
 
 **Structure of Get and Get by Id api method**
 
+
 **GET**
 ```c#
 [HttpGet]
@@ -179,7 +196,7 @@ public IActionResult GetAll()
 ```
 > `ToList()` is a LINQ syntax, help parse `Loais` to `List` structure
 It convert all data in `Loais` into a `List`
-
+<hr></hr>
 
 **GET by id**
 ```c#
@@ -194,6 +211,7 @@ public IActionResult GetAll(int id)
 }
 ```
 `SingleOrDefault` Returns a single, specific element of a sequence, or a default value if that element is not found (return `[]`).
+<hr></hr>
 
 **POST**
 In post i need define (create) model 
@@ -230,12 +248,14 @@ public IActionResult CreateNew(LoaiModel model)
    });
 }
 ```
+
 1. Create a instance `Loai` named `loai`
 2. assign `model.TenLoai` (which required I input on swagger) to `Tenloai` (An property of `loai` - instance of `Loai`)
 **Note:** `model.TenLoai` is data of me input from keyboard...
 3. Add value to `_context`
 4. SaveChanges() will trigger the insert SQL
 5. return 2 field `MaLoai` and `Tenloai` that just input
+<hr></hr>
 
 **PUT**
 ```c#
@@ -253,3 +273,4 @@ public IActionResult UpdateLoaiById(int id, LoaiModel model)
        return NotFound();
 }
 ```
+<hr></hr>
