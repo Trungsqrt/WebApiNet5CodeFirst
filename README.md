@@ -31,7 +31,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
     }
 ```
-# Config appsetting.json to add ConnectionString
+# Config appsetting.json
+**I need config appsetting.json to add ConnectionString**
 ```
 "ConnectionStrings": {
     "MyDB": "Data Source=DESKTOP-AKO8HKM\\SQLEXPRESS;Initial Catalog=Net5CodeFirst;Integrated Security=True"
