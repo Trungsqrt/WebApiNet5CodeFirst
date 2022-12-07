@@ -5,12 +5,12 @@ My first web api
 **Create database using Entity Framework core**
 
 import 2 namespace DataAnnotations and DataAnnotations.Schema to use properties such as `[Key] [Required]...`  to create database for project code first.
-```
+```c#
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 ```
 
-```
+```c#
    [Table("HangHoa")]
     public class HangHoa
     {
@@ -33,7 +33,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 ```
 # Config appsetting.json
 **I need config appsetting.json to add ConnectionString**
-```
+```c#
 "ConnectionStrings": {
     "MyDB": "Data Source=DESKTOP-AKO8HKM\\SQLEXPRESS;Initial Catalog=Net5CodeFirst;Integrated Security=True"
   }
