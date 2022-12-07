@@ -1,17 +1,17 @@
 # Menu
-* [Create Database using EF core](#Create Database using EF core)
+* [Create Database using EF core](#CreateDatabaseEFcore)
 * [Config appsetting.json](#Appsetting.json)
-* [Create DbSet](#Create DbSet)
+* [Create DbSet](#DbSet)
 * [Migration](#Migration)
-* [Add relationship](#Add relationship)
-* [Create first Api](#Create first Api)
+* [Add relationship](#Relationship)
+* [Create first Api](#FirstApi)
 
 
 # WebApiNet5CodeFirst
 My first web api
 
 
-# Create Database using EF core
+# CreateDatabaseEFcore
 **Create database using Entity Framework core**
 import 2 namespace DataAnnotations and DataAnnotations.Schema to use properties such as `[Key] [Required]...`  to create database for project code first.
 ```c#
@@ -51,7 +51,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 ```
 
 
-# Create DbSet
+# DbSet
 **At MyDbContext.cs**
 Create a `MyDbContext` class inherit `DbContext` to use properties of `DbContext`
 Create a constructor that has `options` property that inherit 
@@ -114,7 +114,7 @@ protected override void Down(MigrationBuilder migrationBuilder)
 **So I run `update-database` **
 
 
-# Add relationship
+# Relationship
 **Add relationship Table Loai and Table HangHoa**
 
 **at Table Loai I have general property, and a special property named HangHoas, it is represent for 1-n relationship**
@@ -155,7 +155,7 @@ public DbSet<Loai> Loais { get; set; }
 ```
 
 
-# Create first Api
+# FirstApi
 **Overview**
 Create new file `LoaisController.cs` at Controllers folder
 
