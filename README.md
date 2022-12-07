@@ -130,6 +130,13 @@ public class HangHoa
 
 `?` is exist or not `[ForeignKey("MaLoai")]` set the MaLoai is foreign key
 
+After that I add new `DbSet`
+```c#
+public DbSet<Loai> Loais { get; set; }
+```
 
+# Create first Api
+
+Create new file `LoaisController.cs` at Controllers folder
 
 
