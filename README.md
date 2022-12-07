@@ -1,10 +1,10 @@
 # Menu
-* [Create Database using EF core](#Create Database using EF core)
-* [Config appsetting.json](#Config appsetting.json)
-* [Create DbSet](#Create DbSet)
+* [Create_Database_using_EF_core](#Create Database using EF core)
+* [Config_appsetting.json](#Config appsetting.json)
+* [Create_DbSet](#Create DbSet)
 * [Migration](#Migration)
-* [Add relationship](#Add relationship)
-* [Create first Api](#Create first Api)
+* [Add_relationship](#Add relationship)
+* [Create_first_Api](#Create first Api)
 
 
 # WebApiNet5CodeFirst
