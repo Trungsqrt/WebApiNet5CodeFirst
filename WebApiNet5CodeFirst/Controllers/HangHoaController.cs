@@ -8,12 +8,12 @@ namespace WebApiNet5CodeFirst.Controllers
     [ApiController]
     public class HangHoaController : ControllerBase
     {
-        public static List<HangHoa> hanghoas = new List<HangHoa>();
+        public static List<HangHoa> hangHoas = new List<HangHoa>();
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(hanghoas);
+            return Ok(hangHoas);
         }
 
         [HttpGet("{id}")]
@@ -21,22 +21,20 @@ namespace WebApiNet5CodeFirst.Controllers
         {
             try
             {
-                var hanghoa = hanghoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
-                if (hanghoa == null)
+                // LINQ [Object] Query
+                var hangHoa = hangHoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
+                if (hangHoa == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    return Ok(hanghoa);
-                }
+                return Ok(hangHoa);
             }
             catch
             {
                 return BadRequest();
             }
-            
         }
+
 
         [HttpPost]
         public IActionResult Create(HangHoaVM hangHoaVM)
@@ -47,41 +45,62 @@ namespace WebApiNet5CodeFirst.Controllers
                 TenHangHoa = hangHoaVM.TenHangHoa,
                 DonGia = hangHoaVM.DonGia
             };
-            hanghoas.Add(hanghoa);
+            hangHoas.Add(hanghoa);
             return Ok(new
             {
                 Success = true,
-                Data = hanghoa,
+                Data = hanghoa
             });
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edit (string id, HangHoa hanghoaEdit)
+        public IActionResult Edit(string id, HangHoa hangHoaEdit)
         {
-            var hanghoa = hanghoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
-            if(hanghoa == null)
+            try
             {
-                return NotFound();
-            }
-            else
-            {
-                hanghoa.TenHangHoa = hanghoaEdit.TenHangHoa;
-                hanghoa.DonGia = hanghoaEdit.DonGia;
-                return Ok(new
+                // LINQ [Object] Query
+                var hangHoa = hangHoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
+                if (hangHoa == null)
                 {
-                    Success = true,
-                    Data = hanghoa,
-                });
+                    return NotFound();
+                }
+
+                if (id != hangHoa.MaHangHoa.ToString())
+                {
+                    return BadRequest();
+                }
+                // Update
+                hangHoa.TenHangHoa = hangHoaEdit.TenHangHoa;
+                hangHoa.DonGia = hangHoaEdit.DonGia;
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete (string id)
+        public IActionResult Remove(string id)
         {
-            var hanghoa = hanghoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
-            hanghoas.Remove(hanghoa);
-            return Ok();
-        }
+            try
+            {
+                // LINQ [Object] Query
+                var hangHoa = hangHoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
+                if (hangHoa == null)
+                {
+                    return NotFound();
+                }
+                // Update
+                hangHoas.Remove(hangHoa);
 
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

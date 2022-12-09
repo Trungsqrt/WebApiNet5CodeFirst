@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MyWebApiApp.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApiNet5CodeFirst.Data
@@ -7,7 +8,7 @@ namespace WebApiNet5CodeFirst.Data
     public class HangHoa
     {
         [Key]
-        public Guid MaHangHoa { get; set; }
+        public Guid MaHh { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -15,11 +16,20 @@ namespace WebApiNet5CodeFirst.Data
 
         public string MoTa { get; set; }
 
-        [Range(0,double.MaxValue)]
-        public string GiamGia { get; set; }
-
-
+        [Range(0, double.MaxValue)]
         public double DonGia { get; set; }
 
+        public byte GiamGia { get; set; }
+
+        public int? MaLoai { get; set; }
+        [ForeignKey("MaLoai")]
+        public Loai Loai { get; set; }
+
+
+        public ICollection<DonHangChiTiet> DonHangChiTiets { set; get; }
+        public HangHoa()
+        {
+            DonHangChiTiets = new HashSet<DonHangChiTiet>();
+        }
     }
 }
