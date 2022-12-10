@@ -5,6 +5,7 @@
 * [Migration](#Migration)
 * [Add relationship](#Relationship)
 * [Create first Api](#FirstApi)
+* [Implement Fluent API](#FluentAPI)
 
 
 # WebApiNet5CodeFirst
